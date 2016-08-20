@@ -1,0 +1,50 @@
+/* sample svg css for oxygen schema diagram render emulation */
+
+text {font-family:arial, helvetica, sans-serif; color:black}
+
+.xsd-text {
+   font-size: 14pt;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+.complexType-rect {
+   fill:violet;
+   stroke:black;
+   stroke-width:1;
+   opacity:0.2;
+}
+
+.element-rect {
+   fill:lightblue;
+   stroke:black;
+   stroke-width:1;
+   opacity:0.2;
+}
+
+.xsd-required, .xsd-optional {
+     fill:lightblue;
+     stroke:black;
+     stroke-width:2;
+     opacity:0.8;
+ }
+ 
+ .xsd-required {
+ }
+ 
+ /* five pixels on and five off */
+ .xsd-optional {
+   stroke-dasharray: 10, 10;
+   stroke-width:2;
+ }
+ 
+ .card-text {
+   font-size: 10pt;
+   font-family: Arial, Helvetica, sans-serif;
+ }
+ 
+ .annotation-text {
+   font-size: 10pt;
+   font-family: Arial, Helvetica, sans-serif;
+   color:gray;
+ }
+          
