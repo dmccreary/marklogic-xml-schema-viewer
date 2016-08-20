@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    targetNamespace="http://marklogic.com/data-hub-demo/xml-schema-render-test"
+    elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>General XML Schema annotation.  This text should
+        describe the XML Schema and the scople of its functions.  Some XML Schemas
+        are containers of complex types.  They are "Named Types" library XML Schemas.</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://marklogic.com/data-hub-demo/xml-schema-render-test" schemaLocation="import-file.xsd"/>
+
+    <xs:complexType name="SampleComplexType1">
+        <xs:annotation>
+            <xs:documentation>Sample Documentation for this type</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sampleElementName1-1" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>sampleElementName1-1 documentation.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sampleElementName1-2" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>sampleElementName1-2 documentation.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SampleComplexType1-2">
+        <xs:annotation>
+            <xs:documentation>Sample Documentation for this type</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sampleElementName2-1" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>sampleElementName2-1 documentation.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sampleElementName2-2" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>sampleElementName2-2 documentation.  Sample test that will wrap to multiple
+                    lines and may contain newlines and tabs.  THis must render in a reasonable width.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
