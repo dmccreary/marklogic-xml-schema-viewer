@@ -30,7 +30,7 @@ declare function xsd2svg:main($input as node()*, $map as map:map, $style-uri as 
             case element(xs:choice) return xsd2svg:choice($node, $map, $style-uri)
             case element(xs:any) return xsd2svg:any($node, $map, $style-uri)
             case element(xs:simpleType) return xsd2svg:simpleType($node, $map, $style-uri)
-            case element(xs:annotation) return xsd2svg:annotation($node, $map, $style-uri)
+(:            case element(xs:annotation) return xsd2svg:annotation($node, $map, $style-uri):)
             case element(xs:complexType) return xsd2svg:complexType($node, $map, $style-uri)
             case element(xs:import) return xsd2svg:import($node, $map, $style-uri)
             (: TODO
@@ -54,6 +54,7 @@ return
        {doc($style-uri)}
     </style>
     <text x="10" y="20">XML Schema URI: {xdmp:node-uri($node)}</text>
+    {xsd2svg:inc-vpos($map, $xsd2svg:element-height)}
     {xsd2svg:recurse($node, $map, $style-uri)}
 </svg>
 };
@@ -92,6 +93,10 @@ return
    and the annotation os for the text annotation of the node :)
    
 declare function xsd2svg:element($node as node(), $map as map:map, $style-uri as xs:string) as node()* {
+let $is-leaf :=
+  if ($node/xs:complexType)
+    then false()
+    else true()
 let $hpos := xs:decimal(map:get($map, 'hpos'))
 let $vpos := xs:decimal(map:get($map, 'vpos'))
 let $name := $node/@name/string()
@@ -111,21 +116,45 @@ return
        <text x="15" y="45" class="annotation-text" fill="gray">{$max-cardinality}</text>
        <text x="20" y="60" class="annotation-text" fill="gray">{$annotation}</text>
    </g>,
-   xsd2svg:inc-vpos($map, $xsd2svg:element-height),
+   (: if we are a leaf just move down.  If not position over to the right :)
+   if ($is-leaf)
+      then xsd2svg:inc-vpos($map, $xsd2svg:element-height*3)
+      else xsd2svg:move-rel($map, 102, -38)
+      ,
    xsd2svg:main($node/*, $map, $style-uri)
 )
 
 };
 
 declare function xsd2svg:complexType($node as node(), $map, $style-uri as xs:string) as node()* {
-let $hpos := xs:decimal(map:get($map, 'hpos'))
-let $vpos := xs:decimal(map:get($map, 'vpos'))
+let $name := $node/@name/string()
+let $named-complex-type :=
+  if (exists($name))
+     then true()
+     else false()
+let $hpos := 
+  if ($named-complex-type)
+     then 20
+     else map:get($map, 'hpos')
+let $vpos := map:get($map, 'vpos')
 return
 (
    <g class="complexType" transform="translate({$hpos}, {$vpos})">
-      <line class="complexType" x1="{$hpos}" x2="{$hpos + 50}" y1="14" y2="14" stroke="blue" stroke-width="2"/>
+   {if ($named-complex-type)
+      then
+        <g>
+           <rect class="complexType-rect" x="10" y="0" rx="5" ry="5" width="250" height="28"/>
+           <text x="15" y="20" class="xsd-text">{$name}</text>
+           <text x="15" y="40" class="annotation-text">{$node/xs:annotation/xs:documentation/text()}</text>
+        </g>
+      else
+      <line class="complexType" x1="0" x2="50" y1="14" y2="14" stroke="blue" stroke-width="2"/>
+   }
    </g>,
-   xsd2svg:move-rel($map, 20, 0),
+   if ($named-complex-type)
+      then xsd2svg:move-rel($map, 20, -10)
+      else xsd2svg:move-rel($map, 150, -10)
+   ,
    xsd2svg:recurse($node, $map, $style-uri)
 )
 };
@@ -154,14 +183,15 @@ return
         <circle fill="black" r="5" cx="30" cy="25"/>
         <circle fill="black" r="5" cx="45" cy="25"/>
         <line x1="2" y1="25" x2="58" y2="25" stroke="black"/>
+        {xsd2svg:move-rel($map, 20, 0)}
     </g>
     {for $ele at $count in $node/xs:element
      return
-    <g transform="translate({$hpos}, {$vpos})">
-       {xsd2svg:element($ele, $map, $style-uri)}
-    </g>
+        <g transform="translate({$hpos}, {$vpos})">
+           {xsd2svg:element($ele, $map, $style-uri)}
+        </g>
      }
-</g>, xsd2svg:move-rel($map, 20, 0)
+</g>
 };
     
 declare function xsd2svg:choice($node as node(), $map, $style-uri as xs:string) as node() {
