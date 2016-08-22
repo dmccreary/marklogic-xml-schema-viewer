@@ -30,10 +30,7 @@
               <feMergeNode/> <!-- this contains the offset blurred image -->
               <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
             </feMerge>
-          </filter>
-          <circle r="10" />
-          
-          
+          </filter>          
         </defs>
         
         <g transform="translate(0, 10)">
