@@ -14,6 +14,9 @@ declare default element namespace "http://www.w3.org/2000/svg";
  filter="url(#dropshadow)"
  :)
  
+ declare variable $svg-util:style-uri := '/resources/css/xml-schema-svg-oxygen.css';
+ declare variable $svg-util:style := <style type="text/css">{doc($svg-util:style-uri)}</style>;
+ 
 declare variable $svg-util:defs :=
 <defs>
     <linearGradient id="complex" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -22,8 +25,8 @@ declare variable $svg-util:defs :=
     </linearGradient>
     
     <linearGradient id="element" x1="0%" y1="0%" x2="0%" y2="100%">
-     <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
-     <stop offset="100%" style="stop-color:rgb(200,200,255);stop-opacity:1"/>
+        <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:rgb(200,200,255);stop-opacity:1"/>
     </linearGradient>
           
     <filter id="dropshadow" height="130%">
